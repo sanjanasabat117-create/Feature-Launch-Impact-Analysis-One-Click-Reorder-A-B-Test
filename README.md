@@ -55,6 +55,22 @@ To build the dashboard, I used the following DAX measures to calculate technical
   )
   ```
 
+## ⚙️ Power BI Implementation
+To ensure data accuracy, I performed the following steps in Power BI:
+
+### 1. Data Transformation (Power Query)
+Filtered the raw transaction data to focus specifically on users who initiated the reorder process, ensuring the conversion metrics are precise.
+![Data Cleaning](images/data_cleaning.png)
+
+### 2. Technical DAX Measures
+Created custom business logic for tracking KPIs. Below are snapshots of the DAX implementation:
+- **Total Users Calculation:**
+  ![DAX Total Users](images/dax_total_users.png)
+- **Total Revenue Calculation:**
+  ![DAX Total Revenue](images/dax_total_revenue.png)
+- **Avg Checkout Time Calculation:**
+  ![DAX Avg Time](images/dax_avg_time.png)
+
 ## 🎯 Results & Conclusion
 Based on the generated statistical analysis:
 1. **Conversion Rate Uplift:** The One-Click Button significantly increases conversion.
