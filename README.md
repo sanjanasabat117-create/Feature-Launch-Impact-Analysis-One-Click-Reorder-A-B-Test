@@ -39,17 +39,29 @@ python ab_test_analysis.py
 - **Null Hypothesis ($H_0$):** The One-Click Reorder button has no effect on checkout conversion rate.
 - **Alternative Hypothesis ($H_A$):** The One-Click Reorder button significantly increases the checkout conversion rate.
 
+## 📊 Data Modeling (DAX)
+To build the dashboard, I used the following DAX measures to calculate technical KPIs:
+
+- **Total Users:** `Total_user = COUNTROWS(ab_test_data)`
+- **Total Revenue:** `Total_revenue = SUM(ab_test_data[order_value])`
+- **Avg Checkout Time:** `Avg_checkout_time = AVERAGE(ab_test_data[time_spent_secs])`
+- **Conversion Rate:** 
+  ```dax
+  Conversion_rate = 
+  DIVIDE(
+      CALCULATE(COUNTROWS(ab_test_data), ab_test_data[purchase_completed] = 1),
+      [Total_user], 
+      0
+  )
+  ```
+
 ## 🎯 Results & Conclusion
 Based on the generated statistical analysis:
 1. **Conversion Rate Uplift:** The One-Click Button significantly increases conversion.
 2. **Checkout Time:** Reduced by ~60 seconds per user, statistically significant (p-value < 0.05).
 3. **Rollout Recommendation:** ✅ Roll Out the feature to 100% of users. The estimated revenue uplift is highly positive.
 
-## 📊 Dashboard Preview
-*Once you have created your Power BI dashboard, take screenshots and place them in an `images/` folder in this repository. Then, link them below:*
+## �️ Dashboard Preview
+*(To display your Power BI screenshots here, save them as `dashboard.png` in the `images/` folder of this repo.)*
 
-![Dashboard Overview](images/dashboard_overview.png)
-*Figure 1: Main KPI Dashboard showing conversion uplift and revenue impact.*
-
-![Statistical Detail](images/statistical_detail.png)
-*Figure 2: Scatter plot analysis showing the reduction in checkout time for the treatment group.*
+![Dashboard Preview](images/dashboard.png)
