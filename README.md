@@ -61,7 +61,7 @@ Based on the generated statistical analysis:
 2. **Checkout Time:** Reduced by ~60 seconds per user, statistically significant (p-value < 0.05).
 3. **Rollout Recommendation:** ✅ Roll Out the feature to 100% of users. The estimated revenue uplift is highly positive.
 
-## �️ Dashboard Preview
+## 🎬 Dashboard Preview
 *(To display your Power BI screenshots here, save them as `dashboard.png` in the `images/` folder of this repo.)*
 
 ![Dashboard Preview](images/dashboard.png)
