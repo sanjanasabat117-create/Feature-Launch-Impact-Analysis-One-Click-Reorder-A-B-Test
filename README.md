@@ -12,11 +12,13 @@ The goal is to determine if bypassing the standard 3-step checkout process incre
 ## 📁 Repository Structure
 ```
 feature_launch_ab_test/
+├── assets/                    # Presentation assets (DAX screenshots, Dashboard)
 ├── generate_ab_test_data.py   # Script to generate realistic A/B testing user data
 ├── ab_test_analysis.py        # Script to perform statistical significance testing
-├── ab_test_data.csv           # Output from the data generation script
-├── POWER_BI_GUIDE.md          # Instructions on visualizing the results
-└── README.md                  # This document
+├── ab_test_data.csv           # Raw data (simulated 10k users)
+├── requirements.txt           # Python dependencies
+├── .gitignore                 # Standard Python ignores
+└── README.md                  # Detailed project documentation
 ```
 
 ## 🚀 How to Run Locally
@@ -39,37 +41,46 @@ python ab_test_analysis.py
 - **Null Hypothesis ($H_0$):** The One-Click Reorder button has no effect on checkout conversion rate.
 - **Alternative Hypothesis ($H_A$):** The One-Click Reorder button significantly increases the checkout conversion rate.
 
-## 📊 Data Modeling (DAX)
-To build the dashboard, I used the following DAX measures to calculate technical KPIs:
+## 📊 Data Modeling & DAX Measures
+To build the interactive dashboard, I implemented several key performance indicators (KPIs) using DAX. These allow for dynamic filtering by group (Control vs. Treatment).
 
-- **Total Users:** `Total_user = COUNTROWS(ab_test_data)`
-- **Total Revenue:** `Total_revenue = SUM(ab_test_data[order_value])`
-- **Avg Checkout Time:** `Avg_checkout_time = AVERAGE(ab_test_data[time_spent_secs])`
-- **Conversion Rate:** 
-  ```dax
-  Conversion_rate = 
-  DIVIDE(
-      CALCULATE(COUNTROWS(ab_test_data), ab_test_data[purchase_completed] = 1),
-      [Total_user], 
-      0
-  )
-  ```
+### 1. Total User Count
+```dax
+Total_user = COUNTROWS(ab_test_data)
+```
+![Total User Measure](assets/total_user_dax.png)
 
-## ⚙️ Power BI Implementation
-To ensure data accuracy, I performed the following steps in Power BI:
+### 2. Average Checkout Time
+*Used to measure the efficiency gain from the One-Click Reorder feature.*
+```dax
+Avg_checkout_time = AVERAGE(ab_test_data[time_spent_secs])
+```
+![Avg Checkout Time Measure](assets/avg_checkout_time_dax.png)
 
-### 1. Data Transformation (Power Query)
-Filtered the raw transaction data to focus specifically on users who initiated the reorder process, ensuring the conversion metrics are precise.
-![Data Cleaning](images/data_cleaning.png)
+### 3. Conversion Rate (%)
+*A critical metric for calculating business impact. It filters for successful purchases divided by total users.*
+```dax
+Conversion_rate = 
+DIVIDE(
+    CALCULATE(COUNTROWS(ab_test_data), ab_test_data[purchase_completed] = 1),
+    [Total_user], 
+    0
+)
+```
+![Conversion Rate Measure](assets/conversion_rate_dax.png)
 
-### 2. Technical DAX Measures
-Created custom business logic for tracking KPIs. Below are snapshots of the DAX implementation:
-- **Total Users Calculation:**
-  ![DAX Total Users](images/dax_total_users.png)
-- **Total Revenue Calculation:**
-  ![DAX Total Revenue](images/dax_total_revenue.png)
-- **Avg Checkout Time Calculation:**
-  ![DAX Avg Time](images/dax_avg_time.png)
+### 4. Total Revenue
+```dax
+Total_revenue = SUM(ab_test_data[order_value])
+```
+![Total Revenue Measure](assets/total_revenue_dax.png)
+
+## 🎨 Interactive Dashboard Preview
+The Power BI dashboard provides a high-level overview for stakeholders while allowing deep-dives into user behavior.
+
+![Full Dashboard Preview](assets/dashboard_full.png)
+
+> **Key Insight:** The treatment group (Treatment) shows a dramatic shift towards lower checkout times (centered around 30s) compared to the control group (Control, centered around 90s).
 
 ## 🎯 Results & Conclusion
 Based on the generated statistical analysis:
@@ -77,7 +88,3 @@ Based on the generated statistical analysis:
 2. **Checkout Time:** Reduced by ~60 seconds per user, statistically significant (p-value < 0.05).
 3. **Rollout Recommendation:** ✅ Roll Out the feature to 100% of users. The estimated revenue uplift is highly positive.
 
-## 🎬 Dashboard Preview
-*(To display your Power BI screenshots here, save them as `dashboard.png` in the `images/` folder of this repo.)*
-
-![Dashboard Preview](images/dashboard.png)
